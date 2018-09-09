@@ -27,8 +27,10 @@ def add_task():
         return redirect(url_for('index'))
 @app.route('/delete')
 def delete_task():
-    task=mongo.db.tasks
-    task.delete_({'id':ObjectId(oid="5b7a96045e8ed81c64862372")})
+    tasks=mongo.db.tasks
+    id = tasks.db.Column(tasks.db.Integer, primary_key=True)
+
+    tasks.delete_one({'id':ObjectId(id)})
     return redirect(url_for('index'))
 @app.route('/Remove_all')
 def remove_all():
@@ -40,6 +42,7 @@ def update():
     if request.method == 'POST':
         tasks = mongo.db.tasks
         tasks.update({
+            tasks:tasks,
             'status': 'completed',
             'created_at': time.strftime('%d-%m-%Y %H:%M:%S'),
             'updated_at': time.strftime('%d-%m-%Y %H:%M:%S')
@@ -47,4 +50,3 @@ def update():
 
     return redirect(url_for('index'))
 
-app.run(debug=True)
